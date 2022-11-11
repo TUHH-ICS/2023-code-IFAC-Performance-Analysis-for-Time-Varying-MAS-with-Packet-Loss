@@ -1,5 +1,7 @@
 # Robust Performance Analysis for Time-Varying Multi-Agent Systems with Stochastic Packet Loss
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7313975.svg)](https://doi.org/10.5281/zenodo.7313975)
+
 ## General
 
 This repository contains an implementation of the algorithms described in the paper

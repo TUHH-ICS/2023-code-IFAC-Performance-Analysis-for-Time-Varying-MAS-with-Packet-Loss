@@ -1,3 +1,12 @@
+%---------------------------------------------------------------------------------------------------
+% For Paper
+% "Robust Performance Analysis for Time-Varying Multi-Agent Systems with Stochastic Packet Loss"
+% by C. Hespe and H. Werner
+% Copyright (c) Institute of Control Systems, Hamburg University of Technology. All rights reserved.
+% Licensed under the GPLv3. See LICENSE in the project root for license information.
+% Author(s): Christian Hespe
+%---------------------------------------------------------------------------------------------------
+
 clear
 
 addpath('analysis', 'util')
@@ -45,7 +54,7 @@ parfor i = 1:numel(X)
         Z_con(i) = h2norm_decomposed_robust(conD, conC, conP, N, [X(i), Y(i)], p);
         Z_adj(i) = h2norm_decomposed_robust(adjD, adjC, adjP, N, [X(i), Y(i)], p);
     end
-        
+
     meter.notify(i);
 end
 disp(['Parameter sweep completed in ' format_duration(toc)])

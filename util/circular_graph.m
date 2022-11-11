@@ -1,3 +1,12 @@
+%---------------------------------------------------------------------------------------------------
+% For Paper
+% "Robust Performance Analysis for Time-Varying Multi-Agent Systems with Stochastic Packet Loss"
+% by C. Hespe and H. Werner
+% Copyright (c) Institute of Control Systems, Hamburg University of Technology. All rights reserved.
+% Licensed under the GPLv3. See LICENSE in the project root for license information.
+% Author(s): Christian Hespe
+%---------------------------------------------------------------------------------------------------
+
 function G = circular_graph(nvert, nedge, directed)
 %CIRCULAR_GRAPH Generates a Matlab graph object that represents a circular
 %graph with a given numer of vertices.
@@ -27,7 +36,7 @@ ring = @(i) mod(i-1, nvert) + 1;
 A = zeros(nvert);
 for i = 1:nvert
     A(i, ring(i+(1:nedge))) = 1;
-    
+
     % If not direction, also add the other direction
     if ~directed
         A(i, ring(i-(1:nedge))) = 1;

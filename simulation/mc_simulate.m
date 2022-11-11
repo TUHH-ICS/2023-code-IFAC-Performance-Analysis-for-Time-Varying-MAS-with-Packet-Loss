@@ -1,3 +1,12 @@
+%---------------------------------------------------------------------------------------------------
+% For Paper
+% "Robust Performance Analysis for Time-Varying Multi-Agent Systems with Stochastic Packet Loss"
+% by C. Hespe and H. Werner
+% Copyright (c) Institute of Control Systems, Hamburg University of Technology. All rights reserved.
+% Licensed under the GPLv3. See LICENSE in the project root for license information.
+% Author(s): Christian Hespe
+%---------------------------------------------------------------------------------------------------
+
 function [h2, converged] = mc_simulate(graphs, pattern, simconf, netconf)
 %MC_SIMULATE Perform a Monte-Carlo simulation of the H2-norm of the
 %network of connected masses
@@ -33,7 +42,7 @@ for i = 1:length(graphs)
     if height(graphs{i}.Nodes) ~= N
         error('Graph %d does not fit the problem size', i)
     end
-    
+
     L0(:,:,i) = full(laplace_matrix(graphs{i}));
     A0(:,:,i) = full(adjacency(graphs{i}));
     Ld(:,:,i) = kron(L0(:,:,i), eye(dim));
@@ -60,10 +69,10 @@ parfor i = 1:numel(M)
         Network = BernoulliNetwork(N, simconf.dT, dim,...
                                     Net(i).range, Net(i).p, Net(i).sym);
     end
-    
+
     % Extract current pattern
     cur_pat = pattern(Pat(i),:);
-    
+
     % Initialize the agents
     Agents = cell(N, 1);
     for j = 1:length(Agents)
@@ -73,7 +82,7 @@ parfor i = 1:numel(M)
         Agents{j} = DisturbedAgent(Network.getId(), pos, pos, adj, cur_pat, dist);
     end
     Agents = [Agents{:}];
-   
+
     % Initialize simulation
     sim   = SimulationManager(Network, Agents);
     steps = sim.estimateSteps(simconf.Tf);
@@ -86,13 +95,13 @@ parfor i = 1:numel(M)
         t = sim.step();
         leech.save(t)
     end
-    
+
     % Deallocate network object. Required for SinrNetwork
     delete(Network)
-    
+
     % Check whether the simulation converged prematurely
     conv(i) = t < simconf.Tf;
-   
+
     % Evaluation
     pos = leech.data.position;
     ref = leech.data.ref;
@@ -103,14 +112,14 @@ parfor i = 1:numel(M)
     for j = 1:steps
         err(j,:) = Ld(:,:,cur_pat(idx))*(pos(j,:) - ref(j,:))';
         ctr(j,:) = Pi*Rhat*u(j,:)';
-        
+
         % Shift to next communication pattern
         idx = idx + 1;
         if idx > length(cur_pat)
             idx = 1;
         end
     end
-    
+
     % Exclude first step, since that will only contain the disturbance
     perf(i) = sum(err.^2, 'all') + sum(ctr(2:end,:).^2, 'all');
     meter.notify(i);

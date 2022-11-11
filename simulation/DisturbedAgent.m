@@ -1,3 +1,12 @@
+%---------------------------------------------------------------------------------------------------
+% For Paper
+% "Robust Performance Analysis for Time-Varying Multi-Agent Systems with Stochastic Packet Loss"
+% by C. Hespe and H. Werner
+% Copyright (c) Institute of Control Systems, Hamburg University of Technology. All rights reserved.
+% Licensed under the GPLv3. See LICENSE in the project root for license information.
+% Author(s): Christian Hespe
+%---------------------------------------------------------------------------------------------------
+
 classdef DisturbedAgent < IntegratorAgent
     %DISTURBEDAGENT Simple LTI agent that can optionally be disturbed by a
     %discrete impulse. The agent tries to maintain a formation using a

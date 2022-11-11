@@ -1,3 +1,12 @@
+%---------------------------------------------------------------------------------------------------
+% For Paper
+% "Robust Performance Analysis for Time-Varying Multi-Agent Systems with Stochastic Packet Loss"
+% by C. Hespe and H. Werner
+% Copyright (c) Institute of Control Systems, Hamburg University of Technology. All rights reserved.
+% Licensed under the GPLv3. See LICENSE in the project root for license information.
+% Author(s): Christian Hespe
+%---------------------------------------------------------------------------------------------------
+
 function [H2, Q, solver_stats] = h2norm_decomposed_robust(sysD, sysC, sysP, N, lambda, p)
 %H2NORM_DECOMPOSED_ROBUST Calculate an upper bound on the H2-norm of a
 %time-varying decomposable jump system in a scalable manner
@@ -54,15 +63,15 @@ cost        = trace(Z);
 for i = 1:2
     li  = lambda(i);
     lit = p*(1-p)*li;
-    
+
     Acl = Ad + p*li*Ac + li*Ap;
     Bcl = Bd + p*li*Bc + li*Bp;
     Ccl = Cd + p*li*Cc + li*Cp;
     Dcl = Dd + p*li*Dc + li*Dp;
-    
+
     LMI = Acl'*Q*Acl + Ccl'*Ccl - Q + 2*lit * (Ac'*Q*Ac + Cc'*Cc);
     TRC = Bcl'*Q*Bcl + Dcl'*Dcl - Z + 2*lit * (Bc'*Q*Bc + Dc'*Dc);
-    
+
     % For certain LMIs that are obviously infeasible, Yalmip will refuse to
     % construct the SDP and issue an error. This try catch will convert
     % that error into a warning so that we can successfully finish running
@@ -89,7 +98,7 @@ else
     % We calculate gamma^2 with the LMI constraints, so we need to take the
     % square root here.
     H2 = sqrt((N-1)*value(cost));
-    
+
     Q  = value(Q);
     solver_stats.yalmip = sol.yalmiptime;
     solver_stats.solver = sol.solvertime;

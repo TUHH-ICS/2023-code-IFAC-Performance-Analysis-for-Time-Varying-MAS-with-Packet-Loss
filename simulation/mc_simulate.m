@@ -84,16 +84,33 @@ parfor i = 1:numel(M)
     Agents = [Agents{:}];
 
     % Initialize simulation
-    sim   = SimulationManager(Network, Agents);
-    steps = sim.estimateSteps(simconf.Tf);
-    leech = DataLeech(Agents, steps, 'position', 'ref', 'u');
-
+    sim  = SimulationManager(Network, Agents);
+    idx  = Agents(1).pattern_idx;
+    init = true;
+    
     % Simulate!
     t = sim.step();
-    leech.save(t)
-    while formation_error(Agents) > simconf.tol && t < simconf.Tf
-        t = sim.step();
-        leech.save(t)
+    while formation_error(Agents) > simconf.tol && t < simconf.Tf       
+        % Evaluate formation error
+        pos = [Agents.position] - [Agents.ref];
+        err = Ld(:,:,cur_pat(idx))*pos(:);
+        
+        % Skip control input in very first iteration, because it only
+        % contains the impulse input
+        if init
+            ctr  = 0;
+            init = false;
+        else
+            u   = [Agents.u];
+            ctr = Pi*Rhat*u(:);
+        end
+        
+        % Sum performance measures
+        perf(i) = perf(i) + sum(err.^2) + sum(ctr.^2);
+        
+        % Simulate one more step
+        idx = Agents(1).pattern_idx;
+        t   = sim.step();
     end
 
     % Deallocate network object. Required for SinrNetwork
@@ -102,26 +119,7 @@ parfor i = 1:numel(M)
     % Check whether the simulation converged prematurely
     conv(i) = t < simconf.Tf;
 
-    % Evaluation
-    pos = leech.data.position;
-    ref = leech.data.ref;
-    u   = leech.data.u;
-    err = zeros(steps, dim*N);
-    ctr = zeros(steps, dim*N);
-    idx = 1;
-    for j = 1:steps
-        err(j,:) = Ld(:,:,cur_pat(idx))*(pos(j,:) - ref(j,:))';
-        ctr(j,:) = Pi*Rhat*u(j,:)';
-
-        % Shift to next communication pattern
-        idx = idx + 1;
-        if idx > length(cur_pat)
-            idx = 1;
-        end
-    end
-
-    % Exclude first step, since that will only contain the disturbance
-    perf(i) = sum(err.^2, 'all') + sum(ctr(2:end,:).^2, 'all');
+    % Update progress meter
     meter.notify(i);
 end
 

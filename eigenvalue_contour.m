@@ -41,8 +41,6 @@ Z_con  = NaN(size(X));
 Z_adj  = NaN(size(X));
 
 %% Calculate upper bound on H2 norm for each grid point
-parpool([8, 32]);
-
 % Create progress meter
 meter = ParforProgressMeter(numel(X), 0.02);
 meter.start()
@@ -58,9 +56,6 @@ parfor i = 1:numel(X)
     meter.notify(i);
 end
 disp(['Parameter sweep completed in ' format_duration(toc)])
-
-% Shutdown parpool
-delete(gcp('nocreate'));
 
 %% Generate contour lines
 % The contour lines are generated on a log scale such that they are not all

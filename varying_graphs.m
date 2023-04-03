@@ -75,8 +75,6 @@ for graph = graphs
 end
 
 %% Analyse the system
-parpool([8, 32]);
-
 % Theoretical upper bound
 h2_rb = zeros(size(p_swp));
 tic
@@ -90,9 +88,6 @@ tic
 [h2_mc, converged] = mc_simulate(graphs, pattern, simconf, netconf);
 disp(['Monte-Carlo analysis completed in ' format_duration(toc)])
 converged = all(converged, 2);
-
-% Shutdown parpool
-delete(gcp('nocreate'));
 
 % Filter out results that did not converge
 h2_mc(~converged,:) = NaN;

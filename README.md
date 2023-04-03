@@ -6,7 +6,7 @@
 
 This repository contains an implementation of the algorithms described in the paper
 
-> C. Hespe, H. Werner, *Robust Performance Analysis for Time-Varying Multi-Agent Systems with Stochastic Packet Loss*, submitted to IFAC World Congress 2023.
+> C. Hespe, H. Werner, "Robust Performance Analysis for Time-Varying Multi-Agent Systems with Stochastic Packet Loss," *IFAC World Congress*. 2023.
 
 It may be used to recreate and validate the figures from the paper.
 To do so, run either of the two main entry points in the repository, the scripts `eigenvalue_contour.m` and `varying_graphs.m`.

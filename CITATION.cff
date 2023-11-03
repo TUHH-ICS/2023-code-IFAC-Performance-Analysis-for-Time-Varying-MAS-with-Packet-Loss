@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+title: Robust Performance Analysis for Time-Varying Multi-Agent Systems with Stochastic Packet Loss
+message: If you use this software, please cite it using the metadata from this file.
+type: software
+authors:
+  - given-names: Christian
+    family-names: Hespe
+    orcid: 'https://orcid.org/0000-0001-5772-9044'
+    affiliation: Hamburg University of Technology, Institute of Control Systems
+  - given-names: Herbert
+    family-names: Werner
+    affiliation: Hamburg University of Technology, Institute of Control Systems
+    orcid: 'https://orcid.org/0000-0003-3456-5539'
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.7313975
+    description: DOI of the Zenodo archive
+repository-code: https://github.com/TUHH-ICS/2023-code-IFAC-Performance-Analysis-for-Time-Varying-MAS-with-Packet-Loss
+repository: https://arxiv.org/abs/2304.02393
+keywords:
+  - multiagent systems
+  - monte-carlo
+  - packet loss
+license: GPL-3.0
